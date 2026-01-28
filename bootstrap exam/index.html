@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bites - Food Menu</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: #ffffff;
+            padding: 0;
+            border-bottom: none;
+            box-shadow: none;
+            position: relative;
+            height: 80px;
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #FF6B00 !important;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0 40px;
+            padding: 0;
+            gap: 40px;
+        }
+        
+        .nav-links li {
+            display: inline-block;
+        }
+        
+        .nav-link {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333 !important;
+            text-decoration: none;
+            padding: 0;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: #FF6B00 !important;
+        }
+        
+        .btn-reserve {
+            background-color: #FF6B00;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+        
+        .btn-reserve:hover {
+            background-color: #E55A00;
+            color: white;
+        }
+        
+        /* Menu Header */
+        .menu-header {
+            text-align: center;
+            padding: 40px 0 10px;
+            background-color: #ffffff;
+        }
+        
+        .menu-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #333333;
+            margin-bottom: 0;
+        }
+        
+        /* Filter Buttons */
+        .filter-section {
+            background-color: #F8F8F8;
+            padding: 25px 0;
+            margin-bottom: 40px;
+        }
+        
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .filter-btn {
+            background-color: #ffffff;
+            border: 1px solid #E0E0E0;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666666;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .filter-btn.active {
+            background-color: #FF6B00;
+            color: white;
+            border-color: #FF6B00;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background-color: #f0f0f0;
+        }
+        
+        /* Menu Grid */
+        .menu-grid {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 15px;
+        }
+        
+        .menu-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        /* Food Card */
+        .food-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .food-image {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .food-image.pasta {
+            background-image: url('https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+        }
+        
+        .food-image.fries {
+            background-image: url('https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+        }
+        
+        .food-image.shawarma {
+            background-image: url('https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+        }
+        
+        .food-image.curry {
+            background-image: url('https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+        }
+        
+        .food-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .food-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #333333;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .food-description {
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            color: #666666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .food-price {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #FF6B00;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .btn-add-to-cart {
+            background-color: #FFA726;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-add-to-cart:hover {
+            background-color: #FF9800;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #2C3E50;
+            padding: 60px 0 30px;
+            color: #ffffff;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .footer-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 14px;
+        }
+        
+        .footer-links a {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: #BDC3C7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+        
+        .newsletter {
+            background-color: #34495E;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .newsletter h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .newsletter p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            color: #BDC3C7;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .email-input {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #2C3E50;
+            border: 1px solid #4A6278;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        
+        .email-input::placeholder {
+            color: #95A5A6;
+        }
+        
+        .about-help-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .help-section {
+            margin-top: 0;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #34495E;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            color: #BDC3C7;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .menu-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .navbar-container {
+                flex-direction: column;
+                padding: 15px;
+                height: auto;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 25px;
+                margin: 20px 0;
+            }
+            
+            .btn-reserve {
+                margin-top: 10px;
+            }
+            
+            .filter-buttons {
+                gap: 12px;
+            }
+            
+            .filter-btn {
+                padding: 10px 22px;
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-row {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .footer-row {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .about-help-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .help-section {
+                margin-top: 40px;
+            }
+            
+            .filter-buttons {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 9px 18px;
+                font-size: 14px;
+            }
+            
+            .menu-header {
+                padding: 30px 0 10px;
+            }
+            
+            .menu-title {
+                font-size: 32px;
+            }
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #333333;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+                position: absolute;
+                right: 15px;
+                top: 25px;
+            }
+            
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+                margin: 20px 0;
+                text-align: center;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .btn-reserve {
+                display: none;
+            }
+            
+            .btn-reserve.mobile {
+                display: block;
+                margin-top: 15px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        /* Text Spacing Adjustments */
+        .spaced-text {
+            letter-spacing: 0.3px;
+        }
+        
+        .food-description {
+            margin-bottom: 25px;
+            padding-right: 5px;
+        }
+        
+        .footer-links li {
+            line-height: 1.6;
+        }
+        
+        .footer-section h3 {
+            letter-spacing: 0.5px;
+        }
+        
+        .newsletter h3 {
+            margin-bottom: 20px;
+        }
+        
+        .btn-reserve {
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-btn {
+            letter-spacing: 0.3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a class="navbar-brand" href="#">Bites</a>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="bi bi-list"></i>
+            </button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a class="nav-link" href="#">About Us</a></li>
+                <li><a class="nav-link" href="#">Menu</a></li>
+                <li><a class="nav-link" href="#">Reviews</a></li>
+                <li><a class="nav-link" href="#">Blog</a></li>
+                <li><a class="nav-link" href="#">Contacts</a></li>
+            </ul>
+            
+            <a href="#" class="btn-reserve">Reserve Table</a>
+            <a href="#" class="btn-reserve mobile" style="display: none;">Reserve Table</a>
+        </div>
+    </nav>
+
+    <!-- Menu Header -->
+    <div class="menu-header">
+        <h1 class="menu-title">Our Regular Menu Pack</h1>
+    </div>
+
+    <!-- Filter Buttons Section -->
+    <div class="filter-section">
+        <div class="filter-container">
+            <div class="filter-buttons">
+                <button class="filter-btn active">Special Foods</button>
+                <button class="filter-btn">Mexican</button>
+                <button class="filter-btn">Italian</button>
+                <button class="filter-btn">Japanese</button>
+                <button class="filter-btn">Drinks</button>
+                <button class="filter-btn">Lunch</button>
+                <button class="filter-btn">More Item+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="menu-grid">
+        <!-- First Row -->
+        <div class="menu-row">
+            <!-- Pasta -->
+            <div class="food-card">
+                <div class="food-image pasta"></div>
+                <div class="food-content">
+                    <h3 class="food-title">Pasta</h3>
+                    <p class="food-description spaced-text">Pasta is a type of food typically made from an unleavened dough of wheat flour mixed with water or eggs, and formed into sheets or other shapes.</p>
+                    <span class="food-price">$35.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+            
+            <!-- French Fries -->
+            <div class="food-card">
+                <div class="food-image fries"></div>
+                <div class="food-content">
+                    <h3 class="food-title">French Fries</h3>
+                    <p class="food-description spaced-text">French fries are batonnet or allumette-cut deep-fried potatoes of disputed origin. They are prepared by cutting potatoes into even strips and frying them.</p>
+                    <span class="food-price">$55.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+            
+            <!-- Chicken Shawarma -->
+            <div class="food-card">
+                <div class="food-image shawarma"></div>
+                <div class="food-content">
+                    <h3 class="food-title">Chicken Shawarma</h3>
+                    <p class="food-description spaced-text">Chicken Shawarma is a popular Middle Eastern dish consisting of marinated chicken that is stacked in a cone-like shape and roasted on a slowly-turning vertical rotisserie.</p>
+                    <span class="food-price">$35.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+            
+            <!-- Fish Curry -->
+            <div class="food-card">
+                <div class="food-image curry"></div>
+                <div class="food-content">
+                    <h3 class="food-title">Fish Curry</h3>
+                    <p class="food-description spaced-text">Fish curry is a dish made with fish or seafood, cooked in a sauce of spices, coconut milk, and other ingredients. It's a staple in many coastal regions around the world.</p>
+                    <span class="food-price">$35.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Row -->
+        <div class="menu-row">
+            <!-- Pasta -->
+            <div class="food-card">
+                <div class="food-image pasta"></div>
+                <div class="food-content">
+                    <h3 class="food-title">Pasta</h3>
+                    <p class="food-description spaced-text">Pasta is a type of food typically made from an unleavened dough of wheat flour mixed with water or eggs, and formed into sheets or other shapes.</p>
+                    <span class="food-price">$35.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+            
+            <!-- French Fries -->
+            <div class="food-card">
+                <div class="food-image fries"></div>
+                <div class="food-content">
+                    <h3 class="food-title">French Fries</h3>
+                    <p class="food-description spaced-text">French fries are batonnet or allumette-cut deep-fried potatoes of disputed origin. They are prepared by cutting potatoes into even strips and frying them.</p>
+                    <span class="food-price">$55.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+            
+            <!-- Chicken Shawarma -->
+            <div class="food-card">
+                <div class="food-image shawarma"></div>
+                <div class="food-content">
+                    <h3 class="food-title">Chicken Shawarma</h3>
+                    <p class="food-description spaced-text">Chicken Shawarma is a popular Middle Eastern dish consisting of marinated chicken that is stacked in a cone-like shape and roasted on a slowly-turning vertical rotisserie.</p>
+                    <span class="food-price">$35.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+            
+            <!-- Fish Curry -->
+            <div class="food-card">
+                <div class="food-image curry"></div>
+                <div class="food-content">
+                    <h3 class="food-title">Fish Curry</h3>
+                    <p class="food-description spaced-text">Fish curry is a dish made with fish or seafood, cooked in a sauce of spices, coconut milk, and other ingredients. It's a staple in many coastal regions around the world.</p>
+                    <span class="food-price">$35.00</span>
+                    <button class="btn-add-to-cart">Add To Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-row">
+                <!-- Newsletter Column -->
+                <div class="footer-section">
+                    <div class="newsletter">
+                        <h3>Subscribe Our Newsletter</h3>
+                        <p class="spaced-text">Stay updated with our latest offers, new menu items, and special promotions. Enter your email to subscribe.</p>
+                        <input type="email" class="email-input" placeholder="Enter Your Email">
+                    </div>
+                </div>
+                
+                <!-- Service Column -->
+                <div class="footer-section">
+                    <h3>Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="spaced-text">Online Order</a></li>
+                        <li><a href="#" class="spaced-text">Pre-Reservation</a></li>
+                        <li><a href="#" class="spaced-text">24/7 Services</a></li>
+                        <li><a href="#" class="spaced-text">Foodie Place</a></li>
+                        <li><a href="#" class="spaced-text">Order Foods</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Quick Links Column -->
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="spaced-text">Menu</a></li>
+                        <li><a href="#" class="spaced-text">Reviews</a></li>
+                        <li><a href="#" class="spaced-text">Blogs</a></li>
+                        <li><a href="#" class="spaced-text">Reserve Table</a></li>
+                        <li><a href="#" class="spaced-text">Our Chefs</a></li>
+                    </ul>
+                </div>
+                
+                <!-- About & Help Columns -->
+                <div class="footer-section">
+                    <div class="about-help-container">
+                        <div>
+                            <h3>About</h3>
+                            <ul class="footer-links">
+                                <li><a href="#" class="spaced-text">Our Story</a></li>
+                                <li><a href="#" class="spaced-text">Benefits</a></li>
+                                <li><a href="#" class="spaced-text">Career</a></li>
+                                <li><a href="#" class="spaced-text">Our Chefs</a></li>
+                                <li><a href="#" class="spaced-text">Super Chefs</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="help-section">
+                            <h3>Help</h3>
+                            <ul class="footer-links">
+                                <li><a href="#" class="spaced-text">Contact</a></li>
+                                <li><a href="#" class="spaced-text">Support</a></li>
+                                <li><a href="#" class="spaced-text">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Bites. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+   
